@@ -9,6 +9,10 @@ Overview
 This is a program to generate a compilation database from the output
 of a build tool.
 
+There is a Python version and a C++ version.  Currently, the C++
+version does not provide for command-line options and is for testing
+only.
+
 Motivation
 ----------
 
@@ -19,11 +23,15 @@ from it.
 Usage
 -----
 
-To show the options, run the following command.
+To show the options, run the following commands.
 
 ::
 
    $ commands_to_compilation_database_py --help
+
+::
+
+   $ commands_to_compilation_database_cpp --help
 
 The simplest usage is to pipe the output from the compilation to the
 program.  The following command shows the usage with Boost.Build by
@@ -60,6 +68,8 @@ Run the following command to build the system.
    $ make
 
 Run the following command to test the system.
+
+NOTE: Currently, the tests fail for the C++ program.
 
 ::
 
