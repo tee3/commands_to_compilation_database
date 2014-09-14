@@ -1,0 +1,7 @@
+[
+  {
+    "command": "\"clang++\" -x c++ -std=c++11 -stdlib=libc++ -O0 -g -O0 -fno-inline -Wall -g   -c -o \"bin/clang-darwin-4.2.1/debug/link-static/commands_to_compilation_database_cpp.o\" \"commands_to_compilation_database_cpp.cpp\"", 
+    "directory": "/Users/tabsoftwareconsulting/Development/commands_to_compilation_database", 
+    "file": "commands_to_compilation_database_cpp.cpp"
+  }
+]

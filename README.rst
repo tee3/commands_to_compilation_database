@@ -41,3 +41,26 @@ incrementally on each build as shown below for Boost.Build.
 ::
 
    $ b2 -d+2 | tee | commands_to_compilation_database_py --build-tool=Boost.Build --incremental
+
+Requirements
+------------
+
+Python Implementation
+~~~~~~~~~~~~~~~~~~~~~
+
+- Python 2.7
+
+Building
+--------
+
+Run the following command to build the system.
+
+::
+
+   $ make
+
+Run the following command to test the system.
+
+::
+
+   $ make test

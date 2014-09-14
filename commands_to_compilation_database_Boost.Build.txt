@@ -1,0 +1,27 @@
+...found 34 targets...
+...updating 11 targets...
+clang-darwin.compile.c++ bin/clang-darwin-4.2.1/debug/link-static/commands_to_compilation_database_cpp.o
+
+    "clang++" -x c++ -std=c++11 -stdlib=libc++ -O0 -g -O0 -fno-inline -Wall -g   -c -o "bin/clang-darwin-4.2.1/debug/link-static/commands_to_compilation_database_cpp.o" "commands_to_compilation_database_cpp.cpp"
+
+clang-darwin.link bin/clang-darwin-4.2.1/debug/link-static/commands_to_compilation_database_cpp
+
+    "clang++" -lboost_filesystem -lboost_program_options -lboost_system -lboost_filesystem -lboost_program_options -lboost_system  -o "bin/clang-darwin-4.2.1/debug/link-static/commands_to_compilation_database_cpp" "bin/clang-darwin-4.2.1/debug/link-static/commands_to_compilation_database_cpp.o"        -g
+
+Jamfile</Users/tabsoftwareconsulting/Development/commands_to_compilation_database>.commands-to-compilation-database bin/clang-darwin-4.2.1/debug/link-static/commands_to_compilation_database_py_Boost.Build.json
+
+   ./commands_to_compilation_database_py  --build-tool=Boost.Build --output-filename=bin/clang-darwin-4.2.1/debug/link-static/commands_to_compilation_database_py_Boost.Build.json --root-directory=/tmp < test/commands_to_compilation_log_Boost.Build.txt
+
+Jamfile</Users/tabsoftwareconsulting/Development/commands_to_compilation_database>.compare-compilation-databases bin/clang-darwin-4.2.1/debug/link-static/commands-compare-py.pass
+
+   if ./compare_compilation_databases_py "test/commands_to_compilation_database_Boost.Build.json" "bin/clang-darwin-4.2.1/debug/link-static/commands_to_compilation_database_py_Boost.Build.json" ; then echo "**passed**" > bin/clang-darwin-4.2.1/debug/link-static/commands-compare-py.pass ; fi
+
+Jamfile</Users/tabsoftwareconsulting/Development/commands_to_compilation_database>.commands-to-compilation-database bin/clang-darwin-4.2.1/debug/link-static/commands_to_compilation_database_cpp_Boost.Build.json
+
+   ./bin/clang-darwin-4.2.1/debug/link-static/commands_to_compilation_database_cpp  --build-tool=Boost.Build --output-filename=bin/clang-darwin-4.2.1/debug/link-static/commands_to_compilation_database_cpp_Boost.Build.json --root-directory=/tmp < test/commands_to_compilation_log_Boost.Build.txt
+
+Jamfile</Users/tabsoftwareconsulting/Development/commands_to_compilation_database>.compare-compilation-databases bin/clang-darwin-4.2.1/debug/link-static/commands-compare-cpp.pass
+
+   if ./compare_compilation_databases_py "test/commands_to_compilation_database_Boost.Build.json" "bin/clang-darwin-4.2.1/debug/link-static/commands_to_compilation_database_cpp_Boost.Build.json" ; then echo "**passed**" > bin/clang-darwin-4.2.1/debug/link-static/commands-compare-cpp.pass ; fi
+
+...updated 11 targets...
