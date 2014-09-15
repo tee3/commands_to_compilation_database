@@ -1,3 +1,8 @@
+import toolset ;
+import feature ;
+
+feature.feature build-tool : : free ;
+
 exe commands_to_compilation_database_cpp
    : # sources
 
@@ -26,27 +31,35 @@ alias test
 # generate targets for each implementation
 for implementation in py cpp
 {
-   explicit commands_to_compilation_database_Boost.Build_$(implementation).json ;
-   make commands_to_compilation_database_Boost.Build_$(implementation).json
-      : # sources
-         commands_to_compilation_database_$(implementation)
-      : # generating-rule
-         @commands-to-compilation-database
-      ;
+   for build-tool in Boost.Build
+   {
+      explicit commands_to_compilation_database_$(build-tool)_$(implementation).json ;
+      make commands_to_compilation_database_$(build-tool)_$(implementation).json
+         : # sources
+            commands_to_compilation_database_$(implementation)
+         : # generating-rule
+            @commands-to-compilation-database
+         : # requirements
+            <build-tool>$(build-tool)
+         ;
 
-   explicit commands-to-compilation-database-compare-$(implementation).pass ;
-   make commands-to-compilation-database-compare-$(implementation).pass
-      : # sources
-         commands_to_compilation_database_Boost.Build.json
-         commands_to_compilation_database_Boost.Build_$(implementation).json
-      : # generating-rule
-         @compare
-      ;
+      explicit commands-to-compilation-database-compare-$(implementation).pass ;
+      make commands-to-compilation-database-compare-$(implementation).pass
+         : # sources
+            test/commands_to_compilation_database_$(build-tool).json
+            commands_to_compilation_database_$(build-tool)_$(implementation).json
+         : # generating-rule
+            @compare
+         ;
+   }
 }
+
+toolset.flags commands-to-compilation-database BUILD_TOOL : <build-tool> ;
+toolset.flags commands-to-compilation-database FLAGS : <flags> ;
 
 actions commands-to-compilation-database
 {
-   ./$(>) --build-tool=Boost.Build --output-filename $(<) < commands_to_compilation_database_Boost.Build.txt
+   ./$(>) $(FLAGS) --build-tool=$(BUILD_TOOL) --output-filename=$(<) < test/commands_to_compilation_database_$(BUILD_TOOL).txt
 }
 
 actions compare
