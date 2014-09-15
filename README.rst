@@ -7,16 +7,46 @@ Overview
 --------
 
 This is a program to generate a compilation database from the output
-of a build tool.
+of a build tool.  It has built in support for the output of the
+``clang`` toolset for Boost.Build, simple ``make``, and provides a
+mechanism to specify the regular expression to match a compiler
+command.
 
 There is a Python version and a C++ version.
+
+Status
+------
+
+This is a work in progress and has not been widely tested.
+
+It has been tested with Boost.Build on Linux and OS X (not tested on
+Windows yet).
+
+The following is a minimum that needs to be tested.
+
+- Test generated compilation database against tools.
+- Test Python version on Windows.
+- Test C++ version on Windows.
+- Test ``--build-tool`` option.
+
+   - Test ``make`` output for simple Makefiles.
+
+- Test ``--compile-command-regex`` option.
+- Test (and consider) root directory option.
+- Test adding additional compiler strings.
+- Test adding additional source file extensions.
+- Test Objective-C and Objective-C++ support.
+- Expand automated testing.
+
+   - Test ``--incremental`` option operation.
 
 Motivation
 ----------
 
 Many build tools provide an option to print the commands taken and
 this program will take this as input and create a compilation database
-from it.
+from it.  This is useful with build systems that do not have native
+support for generating compilation databases.
 
 Usage
 -----
