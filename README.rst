@@ -9,9 +9,7 @@ Overview
 This is a program to generate a compilation database from the output
 of a build tool.
 
-There is a Python version and a C++ version.  Currently, the C++
-version does not provide for command-line options and is for testing
-only.
+There is a Python version and a C++ version.
 
 Motivation
 ----------
@@ -58,19 +56,32 @@ Python Implementation
 
 - Python 2.7
 
+C++ Implementation
+~~~~~~~~~~~~~~~~~~
+
+- Standard C++11 Compiler
+
+   - auto
+   - std::begin, std::end
+   - etc.
+
+- Standard C++11 Standard Library
+
+   - <regex>
+
+- Boost C++ Libraries 1.55.0
+
+   - Boost.Program Options
+   - Boost.Filesytem
+   - Boost.Algorithm (String)
+
+- Boost.Build from Boost C++ Libraries 1.55.0
+
 Building
 --------
 
-Run the following command to build the system.
+Run the following command to build and test the system.
 
 ::
 
-   $ make
-
-Run the following command to test the system.
-
-NOTE: Currently, the tests fail for the C++ program.
-
-::
-
-   $ make test
+   $ b2

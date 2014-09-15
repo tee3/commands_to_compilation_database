@@ -1,0 +1,55 @@
+exe commands_to_compilation_database_cpp
+   : # sources
+
+      commands_to_compilation_database_cpp.cpp
+
+      json.hpp
+
+   : # requirements
+
+      <linkflags>-lboost_program_options
+      <linkflags>-lboost_filesystem
+      <linkflags>-lboost_system
+
+      <toolset>clang:<cxxflags>"-std=c++11 -stdlib=libc++"
+      <toolset>gcc:<cxxflags>-std=c++11
+      <toolset>darwin:<cxxflags>-std=c++11
+
+   ;
+
+alias test
+   : # sources
+      commands-to-compilation-database-compare-py.pass
+      commands-to-compilation-database-compare-cpp.pass
+   ;
+
+# generate targets for each implementation
+for implementation in py cpp
+{
+   explicit commands_to_compilation_database_Boost.Build_$(implementation).json ;
+   make commands_to_compilation_database_Boost.Build_$(implementation).json
+      : # sources
+         commands_to_compilation_database_$(implementation)
+      : # generating-rule
+         @commands-to-compilation-database
+      ;
+
+   explicit commands-to-compilation-database-compare-$(implementation).pass ;
+   make commands-to-compilation-database-compare-$(implementation).pass
+      : # sources
+         commands_to_compilation_database_Boost.Build.json
+         commands_to_compilation_database_Boost.Build_$(implementation).json
+      : # generating-rule
+         @compare
+      ;
+}
+
+actions commands-to-compilation-database
+{
+   ./$(>) --build-tool=Boost.Build --output-filename $(<) < commands_to_compilation_database_Boost.Build.txt
+}
+
+actions compare
+{
+   if diff -w "$(>[1])" "$(>[2])" ; then echo "**passed**" > $(<) ; fi
+}
