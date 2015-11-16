@@ -118,7 +118,8 @@ main (int argc, char * argv [])
    std::regex compile_command_regex;
    if (args.compile_command_regex == "")
    {
-      if (args.build_tool == "")
+      if ((args.build_tool == "") ||
+          (args.build_tool == "make"))
       {
          compile_command_regex = std::regex ("^([^ ]+) (.+) ([^ ]+)$");
       }
