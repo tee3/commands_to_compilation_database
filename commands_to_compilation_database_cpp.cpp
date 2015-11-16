@@ -12,7 +12,7 @@
 #include <string>
 
 #include <regex>
-#include "json.hpp"
+#include "compilation_database.hpp"
 
 struct arguments_type
 {
@@ -138,19 +138,19 @@ main (int argc, char * argv [])
    }
 
    // create the initial compilation database
-   json::compilation_database_type compilation_database;
+   compilation_database::compilation_database_type compilation_database;
    if (args.incremental)
    {
       if (boost::filesystem::exists (args.output_filename))
       {
          std::ifstream ifs (args.output_filename.c_str ());
 
-         compilation_database = json::load (ifs);
+         compilation_database = compilation_database::load (ifs);
       }
    }
 
    // generate a more efficient compilation map by filename
-   std::map<std::string,json::compilation_database_entry> compilation_map;
+   std::map<std::string,compilation_database::compilation_database_entry> compilation_map;
    for (const auto & entry : compilation_map)
    {
       boost::filesystem::path f (entry.second.filename);
@@ -208,7 +208,7 @@ main (int argc, char * argv [])
          continue;
       }
 
-      const json::compilation_database_entry entry =
+      const compilation_database::compilation_database_entry entry =
       {
          args.root_directory != "" ? args.root_directory : boost::filesystem::current_path (),
          line,
@@ -233,7 +233,7 @@ main (int argc, char * argv [])
    // print as json
    {
       std::ofstream ofs (args.output_filename.c_str ());
-      json::dump (compilation_database,ofs);
+      compilation_database::dump (compilation_database,ofs);
    }
 
    return 0;

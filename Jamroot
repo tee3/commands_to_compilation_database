@@ -8,6 +8,7 @@ exe commands_to_compilation_database_cpp
 
       commands_to_compilation_database_cpp.cpp
 
+      compilation_database.hpp
       json.hpp
 
    : # requirements
