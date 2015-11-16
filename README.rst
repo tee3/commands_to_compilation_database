@@ -24,21 +24,16 @@ Windows yet).
 
 The following is a minimum that needs to be tested.
 
-- Test generated compilation database against tools.
 - Test Python version on Windows.
 - Test C++ version on Windows.
-- Test ``--build-tool`` option.
-
-   - Test ``make`` output for simple Makefiles.
-
+- Test ``--build-tool=make`` output for simple Makefiles.
 - Test ``--compile-command-regex`` option.
-- Test (and consider) root directory option.
+- Consider root directory option.
 - Test adding additional compiler strings.
 - Test adding additional source file extensions.
 - Test Objective-C and Objective-C++ support.
 - Expand automated testing.
-
-   - Test ``--incremental`` option operation.
+- Test ``--incremental`` option operation.
 
 Motivation
 ----------
