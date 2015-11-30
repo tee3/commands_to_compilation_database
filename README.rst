@@ -14,6 +14,10 @@ command.
 
 There is a Python version and a C++ version.
 
+There is a program to generate a compilation database from a list of
+files on the standard input.  Compiler flags can be given on the
+comamnd line.
+
 Status
 ------
 
@@ -46,6 +50,9 @@ support for generating compilation databases.
 Usage
 -----
 
+commands_to_compilation_database
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 To show the options, run the following commands.
 
 ::
@@ -72,6 +79,32 @@ incrementally on each build as shown below for Boost.Build.
 ::
 
    $ b2 -d+2 | tee | commands_to_compilation_database_py --build-tool=Boost.Build --incremental
+
+files_to_compilation_database
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To show the options, run the following commands.
+
+::
+
+   $ files_to_compilation_database_py --help
+
+::
+
+   $ files_to_compilation_database_cpp --help
+
+The simplest usage is to pipe a list of filenames to the program.  The
+following command shows the usage with UNIX ``find`` to generate the
+list of C and C++ source and header filenames.
+
+::
+
+   $ find . \( -name \*.[ch]pp -o -name \*.[ch] \) | \
+       files_to_compilation_database_py \
+       --cflags="-std=c89" \
+       --cxxflags="-std=c++11" \
+       --include=include/dir1 \
+       --include=include/dir2
 
 Requirements
 ------------

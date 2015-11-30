@@ -23,10 +23,32 @@ exe commands_to_compilation_database_cpp
 
    ;
 
+exe files_to_compilation_database_cpp
+   : # sources
+
+      files_to_compilation_database_cpp.cpp
+
+      compilation_database.hpp
+      json.hpp
+
+   : # requirements
+
+      <linkflags>-lboost_program_options
+      <linkflags>-lboost_filesystem
+      <linkflags>-lboost_system
+
+      <toolset>clang:<cxxflags>"-std=c++11 -stdlib=libc++"
+      <toolset>gcc:<cxxflags>-std=c++11
+      <toolset>darwin:<cxxflags>-std=c++11
+
+   ;
+
 alias test
    : # sources
       commands-to-compilation-database-compare-py.pass
       commands-to-compilation-database-compare-cpp.pass
+
+      files-to-compilation-database-compare.pass
    ;
 
 # generate targets for each implementation
@@ -52,8 +74,34 @@ for implementation in py cpp
          : # generating-rule
             @compare-compilation-databases
          ;
+
+      explicit files_to_compilation_database_$(implementation).json ;
+      make files_to_compilation_database_$(implementation).json
+         : # sources
+            files_to_compilation_database_$(implementation)
+         : # generating-rule
+            @files-to-compilation-database
+         : # requirements
+            <flags>--cflags=-std=c89
+            <flags>--cxxflags=-std=c++11
+            <flags>--include=INCLUDE1
+            <flags>--include=INCLUDE2
+            <flags>--define=DEFINE1
+            <flags>--define=DEFINE2
+            <flags>--undefine=UNDEFINE1
+            <flags>--undefine=UNDEFINE2
+         ;
    }
 }
+
+explicit files-to-compilation-database-compare.pass ;
+make files-to-compilation-database-compare.pass
+   : # sources
+      files_to_compilation_database_py.json
+      files_to_compilation_database_cpp.json
+   : # generating-rule
+      @compare-compilation-databases
+   ;
 
 toolset.flags commands-to-compilation-database BUILD_TOOL : <build-tool> ;
 toolset.flags commands-to-compilation-database FLAGS : <flags> ;
@@ -61,6 +109,13 @@ toolset.flags commands-to-compilation-database FLAGS : <flags> ;
 actions commands-to-compilation-database
 {
    ./$(>) $(FLAGS) --build-tool=$(BUILD_TOOL) --output-filename=$(<) < test/commands_to_compilation_database_$(BUILD_TOOL).txt
+}
+
+toolset.flags files-to-compilation-database FLAGS : <flags> ;
+
+actions files-to-compilation-database
+{
+   find . -name "*.[ch]pp" | ./$(>) $(FLAGS) --output-filename=$(<) --root-directory=/tmp
 }
 
 actions compare-compilation-databases

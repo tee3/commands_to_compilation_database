@@ -1,0 +1,171 @@
+#!/usr/bin/env python
+"""A program to generate a compilation database given a list of files,
+one per line.
+
+"""
+import sys
+import os
+import argparse
+import json
+
+if __name__ == '__main__':
+    description = 'Generate a Clang compilation database from a list of files.'
+
+    c_extensions = [
+        '.c',
+        '.h'
+    ]
+
+    cxx_extensions = [
+        '.cpp',
+        '.hpp',
+        '.cc',
+        '.hh',
+        '.cxx',
+        '.hxx',
+        '.C',
+        '.H',
+    ]
+
+    objc_extensions = [
+        '.m'
+    ]
+
+    objcxx_extensions = [
+        '.mm'
+    ]
+
+    default_extensions = \
+        c_extensions + \
+        cxx_extensions + \
+        objc_extensions + \
+        objcxx_extensions
+
+    parser = argparse.ArgumentParser(description=description)
+    parser.add_argument('--root-directory',
+                        action='store',
+                        default='',
+                        help='The root directory for the project.')
+    parser.add_argument('--extensions',
+                        action='store',
+                        default=default_extensions,
+                        help='A list of additional filename extensions.')
+    parser.add_argument('--incremental',
+                        action='store_true',
+                        default=False,
+                        help='Incrementally update existing database.')
+    parser.add_argument('-o', '--output-filename',
+                        action='store',
+                        default='compile_commands.json',
+                        help='The filename of the compilation database.')
+    parser.add_argument('--flags',
+                        action='store',
+                        default='',
+                        help='The flags to pass to the Clang compiler.')
+    parser.add_argument('--cflags',
+                        action='store',
+                        default='',
+                        help='The flags to pass to the Clang C compiler.')
+    parser.add_argument('--cxxflags',
+                        action='store',
+                        default='',
+                        help='The flags to pass to the Clang C++ compiler.')
+    parser.add_argument('--objcflags',
+                        action='store',
+                        default='',
+                        help='The flags to pass to the Clang Objective-C compiler.')
+    parser.add_argument('--objcxxflags',
+                        action='store',
+                        default='',
+                        help='The flags to pass to the Clang Objective-C++ compiler.')
+    parser.add_argument('-I', '--include',
+                        action='append',
+                        default=[],
+                        help='An include directory to pass to the Clang compiler.')
+    parser.add_argument('-D', '--define',
+                        action='append',
+                        default=[],
+                        help='A defines to pass to the Clang compiler.')
+    parser.add_argument('-U', '--undefine',
+                        action='append',
+                        default=[],
+                        help='An undefine to pass to the Clang compiler.')
+
+    args = parser.parse_args()
+
+    args.output_filename = os.path.abspath(args.output_filename)
+
+    # create the initial compilation database
+    compilation_database = []
+    if args.incremental:
+        if os.path.exists(args.output_filename):
+            with open(args.output_filename, 'r') as inputfp:
+                compilation_database = json.load(inputfp)
+
+    # generate a more efficient compilation map by filename
+    compilation_map = {}
+    for entry in compilation_database:
+        f = entry['file']
+        if not os.path.isabs(f):
+            f = os.path.join(entry['directory'], f)
+        compilation_map[f] = entry
+
+    # parse the compilation log and update the compilation database
+    for line in sys.stdin:
+        line = line.strip()
+
+        if line == '':
+            continue
+
+        compiler = 'clang++'
+        flags = ['-c']
+        filename = line
+
+        # check if the filename extension is supported
+        n, e = os.path.splitext(filename)
+        if e not in args.extensions:
+            continue
+
+        flags.append('-o ' + n + '.o')
+
+        flags.append(args.flags)
+        if e in c_extensions:
+            flags.append(args.cflags)
+        if e in cxx_extensions:
+            flags.append(args.cxxflags)
+        if e in objc_extensions:
+            flags.append(args.objcflags)
+        if e in objcxx_extensions:
+            flags.append(args.objcxxflags)
+
+        flags += ['-I' + s for s in args.include]
+        flags += ['-D' + s for s in args.define]
+        flags += ['-U' + s for s in args.undefine]
+
+        command = compiler + ' ' + ' '.join(flags) + ' ' + filename
+
+        entry = {
+            'directory': args.root_directory if args.root_directory != "" else os.getcwd (),
+            'command': command,
+            'file': filename
+        }
+
+        f = entry['file']
+        if not os.path.isabs(f):
+            f = os.path.join(entry['directory'], f)
+
+        # check for directory/file already in database
+        compilation_map[f] = entry
+
+    # convert the compilation map to a compilation database, sorted by
+    # the filename
+    compilation_database = []
+    for k in sorted(compilation_map.keys()):
+        compilation_database.append(compilation_map[k])
+
+    # print as json
+    with open(args.output_filename, 'w') as outputfp:
+        json.dump(compilation_database,
+                  fp=outputfp,
+                  indent=2,
+                  sort_keys=True)
