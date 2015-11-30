@@ -132,6 +132,9 @@ if __name__ == '__main__':
     for line in sys.stdin:
         line = line.strip()
 
+        if line == '':
+            continue
+
         m = compile_command_regex.match(line)
         if m is None:
             continue

@@ -213,6 +213,11 @@ main (int argc, char * argv [])
       std::getline (std::cin,line);
       boost::trim (line);
 
+      if (line == "")
+      {
+         continue;
+      }
+
       std::regex_match (line,m,compile_command_regex);
 
       if (!m.ready ())
