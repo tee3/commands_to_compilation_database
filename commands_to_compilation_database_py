@@ -37,9 +37,17 @@ if __name__ == '__main__':
 
     default_extensions = [
         '.c',
+        '.h',
         '.cpp',
+        '.hpp',
+        '.cc',
+        '.hh',
         '.cxx',
-        '.C'
+        '.hxx',
+        '.C',
+        '.H',
+        '.m',
+        '.mm'
     ]
 
     parser = argparse.ArgumentParser(description=description)

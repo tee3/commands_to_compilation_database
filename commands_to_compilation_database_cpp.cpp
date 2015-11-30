@@ -67,9 +67,17 @@ main (int argc, char * argv [])
    std::vector<boost::filesystem::path> default_extensions =
    {
       ".c",
+      ".h",
       ".cpp",
+      ".hpp",
+      ".cc",
+      ".hh",
       ".cxx",
-      ".C"
+      ".hxx",
+      ".C",
+      ".H",
+      ".m",
+      ".mm"
    };
 
    boost::program_options::options_description parser (description);
