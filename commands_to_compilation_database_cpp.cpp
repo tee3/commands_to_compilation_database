@@ -48,8 +48,16 @@ main (int argc, char * argv [])
 
    std::vector<boost::filesystem::path> default_compilers =
    {
+      "cc",
+      "c++",
+
       "clang",
       "clang++",
+
+      "gcc",
+      "g++",
+
+      "cl",
 
       // for now
       "/usr/local/bin/clang-3.4",
