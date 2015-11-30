@@ -1,0 +1,113 @@
+#!/usr/bin/env python
+"""A program to generate a compilation database by parsing build
+commands on standard input or an input file.  It assumes that a single
+line compiles a single source file and the clang compiler is used as
+the compiler.
+
+Note that commands for other compilers can be used here, but there is
+no guarantee that the options are understood by tools that use the
+database.
+
+"""
+import sys
+import os
+import argparse
+import re
+import json
+
+if __name__ == '__main__':
+    description = 'Generate a Clang compilation database from compiler commands.'
+
+    default_compilers = [
+        'clang',
+        'clang++',
+
+        'gcc',
+        'g++',
+
+        'cl',
+
+        # for now
+        '/usr/local/bin/clang-3.4',
+        '/usr/local/bin/clang++-3.4'
+    ]
+
+    c_extensions = [
+        '.c',
+        '.h'
+    ]
+
+    cxx_extensions = [
+        '.cpp',
+        '.hpp',
+        '.cc',
+        '.hh',
+        '.cxx',
+        '.hxx',
+        '.C',
+        '.H',
+    ]
+
+    objc_extensions = [
+        '.m'
+    ]
+
+    objcxx_extensions = [
+        '.mm'
+    ]
+
+    default_extensions = \
+        c_extensions + \
+        cxx_extensions + \
+        objc_extensions + \
+        objcxx_extensions
+
+    parser = argparse.ArgumentParser(description=description)
+    parser.add_argument('filenames',
+                        action='store',
+                        nargs=2,
+                        default='',
+                        help='The filenames of the file to compare.')
+
+    args = parser.parse_args()
+
+    f0 = args.filenames[0]
+    f1 = args.filenames[1]
+
+    if not os.path.exists(f0):
+        print "error: " + f0 + " does not exist."
+        sys.exit(1)
+    if not os.path.exists(f1):
+        print "error: " + f1 + " does not exist."
+        sys.exit(1)
+
+    compilation_map0 = {}
+    with open(f0, 'r') as fp1:
+        compilation_database0 = json.load(fp1)
+        for entry in compilation_database0:
+            f = entry['file']
+            if not os.path.isabs(f):
+                f = os.path.join(entry['directory'], f)
+            compilation_map0[f] = entry
+    compilation_map1 = {}
+    with open(f1, 'r') as fp2:
+        compilation_database1 = json.load(fp2)
+        for entry in compilation_database1:
+            f = entry['file']
+            if not os.path.isabs(f):
+                f = os.path.join(entry['directory'], f)
+            compilation_map1[f] = entry
+
+    keys0 = sorted(compilation_map0.keys())
+    keys1 = sorted(compilation_map1.keys())
+
+    if len(keys0) != len(keys1):
+        print "error: compilation databases have different sizes: (%s, %s)." % (len(keys0), len(keys1))
+        sys.exit(1)
+    if keys0 != keys1:
+        print "error: compilation databases have different keys: (%s, %s)." % (keys0, keys1)
+        sys.exit(1)
+    for k in keys0:
+        if compilation_map0[k] != compilation_map1[k]:
+            print "error: compilation database is different for key %s: (%s, %s)." % (k, compilation_map0[k], compilation_map1[k])
+            sys.exit(1)
