@@ -64,10 +64,14 @@ main (int argc, char * argv [])
       "/usr/local/bin/clang++-3.4"
    };
 
-   std::vector<boost::filesystem::path> default_extensions =
+   std::vector<boost::filesystem::path> c_extensions =
    {
       ".c",
-      ".h",
+      ".h"
+   };
+
+   std::vector<boost::filesystem::path> cxx_extensions =
+   {
       ".cpp",
       ".hpp",
       ".cc",
@@ -75,10 +79,32 @@ main (int argc, char * argv [])
       ".cxx",
       ".hxx",
       ".C",
-      ".H",
-      ".m",
+      ".H"
+   };
+
+   std::vector<boost::filesystem::path> objc_extensions =
+   {
+      ".m"
+   };
+
+   std::vector<boost::filesystem::path> objcxx_extensions =
+   {
       ".mm"
    };
+
+   std::vector<boost::filesystem::path> default_extensions;
+   default_extensions.insert (default_extensions.end (),
+                              c_extensions.begin (),
+                              c_extensions.end ());
+   default_extensions.insert (default_extensions.end (),
+                              cxx_extensions.begin (),
+                              cxx_extensions.end ());
+   default_extensions.insert (default_extensions.end (),
+                              objc_extensions.begin (),
+                              objc_extensions.end ());
+   default_extensions.insert (default_extensions.end (),
+                              objcxx_extensions.begin (),
+                              objcxx_extensions.end ());
 
    boost::program_options::options_description parser (description);
    parser.add_options ()

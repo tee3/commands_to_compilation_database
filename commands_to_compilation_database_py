@@ -35,9 +35,12 @@ if __name__ == '__main__':
         '/usr/local/bin/clang++-3.4'
     ]
 
-    default_extensions = [
+    c_extensions = [
         '.c',
-        '.h',
+        '.h'
+    ]
+
+    cxx_extensions = [
         '.cpp',
         '.hpp',
         '.cc',
@@ -46,9 +49,21 @@ if __name__ == '__main__':
         '.hxx',
         '.C',
         '.H',
-        '.m',
+    ]
+
+    objc_extensions = [
+        '.m'
+    ]
+
+    objcxx_extensions = [
         '.mm'
     ]
+
+    default_extensions = \
+        c_extensions + \
+        cxx_extensions + \
+        objc_extensions + \
+        objcxx_extensions
 
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument('--root-directory',
