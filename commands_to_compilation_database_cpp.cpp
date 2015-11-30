@@ -16,6 +16,7 @@
 
 struct arguments_type
 {
+   bool help;
    boost::filesystem::path root_directory;
    std::vector<boost::filesystem::path> compilers;
    std::vector<boost::filesystem::path> extensions;
@@ -24,22 +25,6 @@ struct arguments_type
    bool incremental;
    boost::filesystem::path output_filename;
 };
-
-arguments_type
-parse_args (const boost::program_options::variables_map & vm)
-{
-   arguments_type args;
-
-   args.root_directory = vm ["root-directory"].as<boost::filesystem::path> ();
-   args.compilers = vm ["compilers"].as<std::vector<boost::filesystem::path>> ();
-   args.extensions = vm ["extensions"].as<std::vector<boost::filesystem::path>> ();
-   args.build_tool = vm ["build-tool"].as<std::string> ();
-   args.compile_command_regex = vm ["compile-command-regex"].as<std::string> ();
-   args.incremental = vm.count ("incremental") > 0;
-   args.output_filename = vm ["output-filename"].as<boost::filesystem::path> ();
-
-   return args;
-}
 
 int
 main (int argc, char * argv [])
@@ -106,41 +91,48 @@ main (int argc, char * argv [])
                               objcxx_extensions.begin (),
                               objcxx_extensions.end ());
 
+   arguments_type args;
+
    boost::program_options::options_description parser (description);
    parser.add_options ()
       (
+         "help,h",
+	 boost::program_options::bool_switch (&args.help)->default_value (false),
+         "Print the help."
+      )
+      (
          "root-directory",
-         boost::program_options::value<boost::filesystem::path> ()->default_value (""),
+         boost::program_options::value<boost::filesystem::path> (&args.root_directory)->default_value (""),
          "The root directory for the project."
       )
       (
          "compilers",
-         boost::program_options::value<std::vector<boost::filesystem::path>> ()->default_value (default_compilers,""),
+         boost::program_options::value<std::vector<boost::filesystem::path>> (&args.compilers)->default_value (default_compilers,""),
          "A list of additional compilers."
       )
       (
          "extensions",
-         boost::program_options::value<std::vector<boost::filesystem::path>> ()->default_value (default_extensions,""),
+         boost::program_options::value<std::vector<boost::filesystem::path>> (&args.extensions)->composing ()->default_value (default_extensions,""),
          "A list of additional filename extensions."
       )
       (
          "build-tool",
-         boost::program_options::value<std::string> ()->default_value (""),
+         boost::program_options::value<std::string> (&args.build_tool)->default_value (""),
          "The build tool that generated the input."
       )
       (
          "compile-command-regex",
-         boost::program_options::value<std::string> ()->default_value (""),
+         boost::program_options::value<std::string> (&args.compile_command_regex)->default_value (""),
          "A regular expression to parse the command line into the compiler, flags, and filename."
       )
       (
          "incremental",
-         boost::program_options::value<bool> ()->default_value (false),
+         boost::program_options::bool_switch (&args.incremental)->default_value (false),
          "Incrementally update existing database."
       )
       (
          "output-filename,o",
-         boost::program_options::value<boost::filesystem::path> ()->default_value ("compile_commands.json"),
+         boost::program_options::value<boost::filesystem::path> (&args.output_filename)->default_value ("compile_commands.json"),
          "The filename of the compilation database."
       )
       ;
@@ -152,7 +144,11 @@ main (int argc, char * argv [])
                                   vm);
    boost::program_options::notify (vm);
 
-   auto args = parse_args (vm);
+   if (args.help)
+   {
+      std::cout << parser << "\n";
+      return 1;
+   }
 
    args.output_filename =
       boost::filesystem::absolute (args.output_filename);
