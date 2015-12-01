@@ -159,7 +159,7 @@ main (int argc, char * argv [])
       if ((args.build_tool == "") ||
           (args.build_tool == "make"))
       {
-         compile_command_regex = std::regex ("^([^ ]+) .+ ([^ ]+)$");
+         compile_command_regex = std::regex ("^([^ ]+) .* ([^ ]+) +-o [^ ]+ *$");
       }
       else if (args.build_tool == "Boost.Build")
       {

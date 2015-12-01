@@ -1,0 +1,12 @@
+[
+  {
+    "command": "c++ -std=c++11    commands_to_compilation_database_cpp.cpp   -o commands_to_compilation_database_cpp",
+    "directory": "/Users/tabsoftwareconsulting/Development/commands_to_compilation_database", 
+    "file": "commands_to_compilation_database_cpp.cpp"
+  }, 
+  {
+    "command": "c++ -std=c++11    files_to_compilation_database_cpp.cpp   -o files_to_compilation_database_cpp",
+    "directory": "/Users/tabsoftwareconsulting/Development/commands_to_compilation_database", 
+    "file": "files_to_compilation_database_cpp.cpp"
+  }
+]

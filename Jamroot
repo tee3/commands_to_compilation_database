@@ -45,6 +45,8 @@ exe files_to_compilation_database_cpp
 
 alias test
    : # sources
+      commands-to-compilation-database-compare-make-py.pass
+      commands-to-compilation-database-compare-make-cpp.pass
       commands-to-compilation-database-compare-Boost.Build-py.pass
       commands-to-compilation-database-compare-Boost.Build-cpp.pass
 
@@ -54,7 +56,7 @@ alias test
 # generate targets for each implementation
 for implementation in py cpp
 {
-   for build-tool in Boost.Build
+   for build-tool in make Boost.Build
    {
       explicit commands_to_compilation_database_$(build-tool)_$(implementation).json ;
       make commands_to_compilation_database_$(build-tool)_$(implementation).json

@@ -102,7 +102,7 @@ if __name__ == '__main__':
     compile_command_regex = None
     if args.compile_command_regex == '':
         if args.build_tool in ['', 'make']:
-            compile_command_regex = re.compile(r'^([^ ]+) .+ ([^ ]+)$')
+            compile_command_regex = re.compile(r'^([^ ]+) .* ([^ ]+) +-o +[^ ]+ *$')
         elif args.build_tool == 'Boost.Build':
             compile_command_regex = re.compile(r'^"([^"]+)" .+ "([^"]+)"$')
     else:
