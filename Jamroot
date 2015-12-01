@@ -45,8 +45,8 @@ exe files_to_compilation_database_cpp
 
 alias test
    : # sources
-      commands-to-compilation-database-compare-py.pass
-      commands-to-compilation-database-compare-cpp.pass
+      commands-to-compilation-database-compare-Boost.Build-py.pass
+      commands-to-compilation-database-compare-Boost.Build-cpp.pass
 
       files-to-compilation-database-compare.pass
    ;
@@ -66,32 +66,32 @@ for implementation in py cpp
             <build-tool>$(build-tool)
          ;
 
-      explicit commands-to-compilation-database-compare-$(implementation).pass ;
-      make commands-to-compilation-database-compare-$(implementation).pass
+      explicit commands-to-compilation-database-compare-$(build-tool)-$(implementation).pass ;
+      make commands-to-compilation-database-compare-$(build-tool)-$(implementation).pass
          : # sources
             test/commands_to_compilation_database_$(build-tool).json
             commands_to_compilation_database_$(build-tool)_$(implementation).json
          : # generating-rule
             @compare-compilation-databases
          ;
-
-      explicit files_to_compilation_database_$(implementation).json ;
-      make files_to_compilation_database_$(implementation).json
-         : # sources
-            files_to_compilation_database_$(implementation)
-         : # generating-rule
-            @files-to-compilation-database
-         : # requirements
-            <flags>--cflags=-std=c89
-            <flags>--cxxflags=-std=c++11
-            <flags>--include=INCLUDE1
-            <flags>--include=INCLUDE2
-            <flags>--define=DEFINE1
-            <flags>--define=DEFINE2
-            <flags>--undefine=UNDEFINE1
-            <flags>--undefine=UNDEFINE2
-         ;
    }
+
+   explicit files_to_compilation_database_$(implementation).json ;
+   make files_to_compilation_database_$(implementation).json
+      : # sources
+         files_to_compilation_database_$(implementation)
+      : # generating-rule
+         @files-to-compilation-database
+      : # requirements
+         <flags>--cflags=-std=c89
+         <flags>--cxxflags=-std=c++11
+         <flags>--include=INCLUDE1
+         <flags>--include=INCLUDE2
+         <flags>--define=DEFINE1
+         <flags>--define=DEFINE2
+         <flags>--undefine=UNDEFINE1
+         <flags>--undefine=UNDEFINE2
+      ;
 }
 
 explicit files-to-compilation-database-compare.pass ;
