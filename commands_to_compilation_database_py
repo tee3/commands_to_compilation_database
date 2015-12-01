@@ -102,9 +102,9 @@ if __name__ == '__main__':
     compile_command_regex = None
     if args.compile_command_regex == '':
         if args.build_tool in ['', 'make']:
-            compile_command_regex = re.compile(r'^([^ ]+) (.+) ([^ ]+)$')
+            compile_command_regex = re.compile(r'^([^ ]+) .+ ([^ ]+)$')
         elif args.build_tool == 'Boost.Build':
-            compile_command_regex = re.compile(r'^"([^"]+)" (.+) "([^"]+)"$')
+            compile_command_regex = re.compile(r'^"([^"]+)" .+ "([^"]+)"$')
     else:
         if args.build_tool != '':
             print 'warning: regex overriding build tool option.'
@@ -138,12 +138,11 @@ if __name__ == '__main__':
         m = compile_command_regex.match(line)
         if m is None:
             continue
-        if len(m.groups()) != 3:
+        if len(m.groups()) != 2:
             continue
 
         compiler = m.group(1)
-#        flags = m.group(2)
-        filename = m.group(3)
+        filename = m.group(2)
 
         # check if it is a call to a compiler
         if compiler not in args.compilers:

@@ -159,11 +159,11 @@ main (int argc, char * argv [])
       if ((args.build_tool == "") ||
           (args.build_tool == "make"))
       {
-         compile_command_regex = std::regex ("^([^ ]+) (.+) ([^ ]+)$");
+         compile_command_regex = std::regex ("^([^ ]+) .+ ([^ ]+)$");
       }
       else if (args.build_tool == "Boost.Build")
       {
-         compile_command_regex = std::regex ("^\"([^\"]+)\" (.+) \"([^\"]+)\"$");
+         compile_command_regex = std::regex ("^\"([^\"]+)\" .+ \"([^\"]+)\"$");
       }
    }
    else
@@ -221,16 +221,13 @@ main (int argc, char * argv [])
          continue;
       }
 
-      if (m.size () != 4)
+      if (m.size () != 3)
       {
          continue;
       }
 
       const boost::filesystem::path compiler (m [1]);
-#if 0
-      const std::string flags = m [2];
-#endif
-      boost::filesystem::path filename (m [3]);
+      boost::filesystem::path filename (m [2]);
 
       // check if the filename extension is supported
       auto n = filename.parent_path () / filename.stem ();
