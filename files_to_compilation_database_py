@@ -12,19 +12,25 @@ if __name__ == '__main__':
     description = 'Generate a Clang compilation database from a list of files.'
 
     c_extensions = [
-        '.c',
+        '.c'
+    ]
+
+    h_extensions = [
         '.h'
     ]
 
     cxx_extensions = [
         '.cpp',
-        '.hpp',
         '.cc',
-        '.hh',
         '.cxx',
+        '.C'
+    ]
+
+    hxx_extensions = [
+        '.hpp',
+        '.hh',
         '.hxx',
-        '.C',
-        '.H',
+        '.H'
     ]
 
     objc_extensions = [
@@ -37,7 +43,9 @@ if __name__ == '__main__':
 
     default_extensions = \
         c_extensions + \
+        h_extensions + \
         cxx_extensions + \
+        hxx_extensions + \
         objc_extensions + \
         objcxx_extensions
 
@@ -130,12 +138,22 @@ if __name__ == '__main__':
 
         flags.append(args.flags)
         if e in c_extensions:
+            flags.append('-x c')
+            flags.append(args.cflags)
+        if e in h_extensions:
+            flags.append('-x c-header')
             flags.append(args.cflags)
         if e in cxx_extensions:
+            flags.append('-x c++')
+            flags.append(args.cxxflags)
+        if e in hxx_extensions:
+            flags.append('-x c++-header')
             flags.append(args.cxxflags)
         if e in objc_extensions:
+            flags.append('-x objective-c')
             flags.append(args.objcflags)
         if e in objcxx_extensions:
+            flags.append('-x objective-c++')
             flags.append(args.objcxxflags)
 
         flags += ['-I' + s for s in args.include]

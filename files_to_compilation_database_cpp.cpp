@@ -38,19 +38,27 @@ main (int argc, char * argv [])
 
    std::vector<boost::filesystem::path> c_extensions =
    {
-      ".c",
+      ".c"
+   };
+
+   std::vector<boost::filesystem::path> h_extensions =
+   {
       ".h"
    };
 
    std::vector<boost::filesystem::path> cxx_extensions =
    {
       ".cpp",
-      ".hpp",
       ".cc",
-      ".hh",
       ".cxx",
+      ".C"
+   };
+
+   std::vector<boost::filesystem::path> hxx_extensions =
+   {
+      ".hpp",
+      ".hh",
       ".hxx",
-      ".C",
       ".H"
    };
 
@@ -69,8 +77,14 @@ main (int argc, char * argv [])
                               c_extensions.begin (),
                               c_extensions.end ());
    default_extensions.insert (default_extensions.end (),
+                              h_extensions.begin (),
+                              h_extensions.end ());
+   default_extensions.insert (default_extensions.end (),
                               cxx_extensions.begin (),
                               cxx_extensions.end ());
+   default_extensions.insert (default_extensions.end (),
+                              hxx_extensions.begin (),
+                              hxx_extensions.end ());
    default_extensions.insert (default_extensions.end (),
                               objc_extensions.begin (),
                               objc_extensions.end ());
@@ -226,6 +240,15 @@ main (int argc, char * argv [])
                      e) !=
           std::end (c_extensions))
       {
+         flags.push_back ("-x c");
+         flags.push_back (args.cflags);
+      }
+      if (std::find (std::begin (h_extensions),
+                     std::end (h_extensions),
+                     e) !=
+          std::end (h_extensions))
+      {
+         flags.push_back ("-x c-header");
          flags.push_back (args.cflags);
       }
       if (std::find (std::begin (cxx_extensions),
@@ -233,6 +256,15 @@ main (int argc, char * argv [])
                      e) !=
           std::end (cxx_extensions))
       {
+         flags.push_back ("-x c++");
+         flags.push_back (args.cxxflags);
+      }
+      if (std::find (std::begin (hxx_extensions),
+                     std::end (hxx_extensions),
+                     e) !=
+          std::end (hxx_extensions))
+      {
+         flags.push_back ("-x c++-header");
          flags.push_back (args.cxxflags);
       }
       if (std::find (std::begin (objc_extensions),
@@ -240,6 +272,7 @@ main (int argc, char * argv [])
                      e) !=
           std::end (objc_extensions))
       {
+         flags.push_back ("-x objective-c");
          flags.push_back (args.objcflags);
       }
       if (std::find (std::begin (objcxx_extensions),
@@ -247,6 +280,7 @@ main (int argc, char * argv [])
                      e) !=
           std::end (objcxx_extensions))
       {
+         flags.push_back ("-x objective-c++");
          flags.push_back (args.objcxxflags);
       }
 
