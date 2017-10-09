@@ -1,7 +1,23 @@
 import toolset ;
 import feature ;
+import package ;
 
 feature.feature build-tool : : free ;
+
+explicit install ;
+package.install install
+  : # requirements
+  : # binaries
+    commands_to_compilation_database_cpp
+    commands_to_compilation_database_py
+
+    files_to_compilation_database_cpp
+    files_to_compilation_database_py
+
+    compare_compilation_databases_py
+  : # libraries
+  : # headers
+  ;
 
 exe commands_to_compilation_database_cpp
    : # sources
