@@ -104,21 +104,15 @@ git ls-files *.[ch] *.[ch]pp | \
 ### C++ Implementation
 
 - Standard C++11 Compiler
-
-   - `auto`
-   - `std::begin`, `std::end`
-   - etc.
-
+  - `auto`
+  - `std::begin`, `std::end`
+  - etc.
 - Standard C++11 Standard Library
-
-   - `<regex>`
-
+  - `<regex>`
 - Boost C++ Libraries 1.55.0
-
-   - Boost.Program Options
-   - Boost.Filesytem
-   - Boost.Algorithm (String)
-
+  - Boost.Program Options
+  - Boost.Filesytem
+  - Boost.Algorithm (String)
 - Boost.Build from Boost C++ Libraries 1.55.0
 
 ## Building
