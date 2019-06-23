@@ -112,7 +112,7 @@ Requirements
 Python Implementation
 ~~~~~~~~~~~~~~~~~~~~~
 
-- Python 2.7
+- Python 3.7
 
 C++ Implementation
 ~~~~~~~~~~~~~~~~~~
