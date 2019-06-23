@@ -138,5 +138,5 @@ actions files-to-compilation-database
 
 actions compare-compilation-databases
 {
-   if ./compare_compilation_databases_py "$(>[1])" "$(>[2])" ; then echo "**passed**" > $(<) ; fi
+   if ./compare_compilation_databases_py "$(>[1])" "$(>[2])" ; then echo "**passed**" > $(<) ; else rm -f $(<) && false ; fi
 }
