@@ -94,12 +94,12 @@ To show the options, run the following commands.
    $ files_to_compilation_database_cpp --help
 
 The simplest usage is to pipe a list of filenames to the program.  The
-following command shows the usage with UNIX ``find`` to generate the
-list of C and C++ source and header filenames.
+following command shows the usage with Git to generate the list of C
+and C++ source and header filenames.
 
 ::
 
-   $ find . \( -name \*.[ch]pp -o -name \*.[ch] \) | \
+   $ git ls-files *.[ch] *.[ch]pp | \
        files_to_compilation_database_py \
        --cflags="-std=c89" \
        --cxxflags="-std=c++11" \
