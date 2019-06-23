@@ -57,11 +57,11 @@ To show the options, run the following commands.
 
 ::
 
-   $ commands_to_compilation_database_py --help
+   commands_to_compilation_database_py --help
 
 ::
 
-   $ commands_to_compilation_database_cpp --help
+   commands_to_compilation_database_cpp --help
 
 The simplest usage is to pipe the output from the compilation to the
 program.  The following command shows the usage with Boost.Build by
@@ -70,7 +70,7 @@ forcing the tool to generate all targets and dry-running the build
 
 ::
 
-   $ b2 -a -n | commands_to_compilation_database_py --build-tool=Boost.Build
+   b2 -a -n | commands_to_compilation_database_py --build-tool=Boost.Build
 
 If the build tool provides a mechanism to output the compilation
 commands while running, the compilation database can be updated
@@ -78,7 +78,7 @@ incrementally on each build as shown below for Boost.Build.
 
 ::
 
-   $ b2 -d+2 | tee | commands_to_compilation_database_py --build-tool=Boost.Build --incremental
+   b2 -d+2 | tee | commands_to_compilation_database_py --build-tool=Boost.Build --incremental
 
 files_to_compilation_database
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -87,11 +87,11 @@ To show the options, run the following commands.
 
 ::
 
-   $ files_to_compilation_database_py --help
+   files_to_compilation_database_py --help
 
 ::
 
-   $ files_to_compilation_database_cpp --help
+   files_to_compilation_database_cpp --help
 
 The simplest usage is to pipe a list of filenames to the program.  The
 following command shows the usage with Git to generate the list of C
@@ -99,7 +99,7 @@ and C++ source and header filenames.
 
 ::
 
-   $ git ls-files *.[ch] *.[ch]pp | \
+   git ls-files *.[ch] *.[ch]pp | \
        files_to_compilation_database_py \
        --cflags="-std=c89" \
        --cxxflags="-std=c++11" \
@@ -142,7 +142,7 @@ Run the following command to build and test the system.
 
 ::
 
-   $ b2
+   b2
 
 Installation
 ------------
@@ -152,4 +152,4 @@ prefix.
 
 ::
 
-   $ b2 --prefix=/usr/local install
+   b2 --prefix=/usr/local install
