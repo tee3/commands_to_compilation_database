@@ -143,3 +143,13 @@ Run the following command to build and test the system.
 ::
 
    $ b2
+
+Installation
+------------
+
+Run the following command to install the system to the ``/usr/local``
+prefix.
+
+::
+
+   $ b2 --prefix=/usr/local install
