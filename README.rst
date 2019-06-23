@@ -30,9 +30,7 @@ The following is a minimum that needs to be tested.
 
 - Test Python version on Windows.
 - Test C++ version on Windows.
-- Test ``--build-tool=make`` output for simple Makefiles.
 - Test ``--compile-command-regex`` option.
-- Consider root directory option.
 - Test adding additional compiler strings.
 - Test adding additional source file extensions.
 - Test Objective-C and Objective-C++ support.
