@@ -1,14 +1,10 @@
-Commands to Compilation Database
-================================
+# Commands to Compilation Database
 
-.. contents::
-
-Overview
---------
+## Overview
 
 This is a program to generate a compilation database from the output
 of a build tool.  It has built in support for the output of the
-``clang`` toolset for Boost.Build, simple ``make``, and provides a
+`clang` toolset for Boost.Build, simple `make`, and provides a
 mechanism to specify the regular expression to match a compiler
 command.
 
@@ -18,8 +14,7 @@ There is a program to generate a compilation database from a list of
 files on the standard input.  Compiler flags can be given on the
 comamnd line.
 
-Status
-------
+## Status
 
 This is a work in progress and has not been widely tested.
 
@@ -30,124 +25,110 @@ The following is a minimum that needs to be tested.
 
 - Test Python version on Windows.
 - Test C++ version on Windows.
-- Test ``--compile-command-regex`` option.
+- Test `--compile-command-regex` option.
 - Test adding additional compiler strings.
 - Test adding additional source file extensions.
 - Test Objective-C and Objective-C++ support.
 - Expand automated testing.
-- Test ``--incremental`` option operation.
+- Test `--incremental` option operation.
 
-Motivation
-----------
+## Motivation
 
 Many build tools provide an option to print the commands taken and
 this program will take this as input and create a compilation database
 from it.  This is useful with build systems that do not have native
 support for generating compilation databases.
 
-Usage
------
+## Usage
 
-commands_to_compilation_database
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+### commands_to_compilation_database
 
 To show the options, run the following commands.
 
-::
+``` shell
+commands_to_compilation_database_py --help
+```
 
-   commands_to_compilation_database_py --help
-
-::
-
-   commands_to_compilation_database_cpp --help
+``` shell
+commands_to_compilation_database_cpp --help
+```
 
 The simplest usage is to pipe the output from the compilation to the
 program.  The following command shows the usage with Boost.Build by
 forcing the tool to generate all targets and dry-running the build
 (which prints the commands).
 
-::
-
-   b2 -a -n | commands_to_compilation_database_py --build-tool=Boost.Build
+``` shell
+b2 -a -n | commands_to_compilation_database_py --build-tool=Boost.Build
+```
 
 If the build tool provides a mechanism to output the compilation
 commands while running, the compilation database can be updated
 incrementally on each build as shown below for Boost.Build.
 
-::
+``` shell
+b2 -d+2 | tee | commands_to_compilation_database_py --build-tool=Boost.Build --incremental
+```
 
-   b2 -d+2 | tee | commands_to_compilation_database_py --build-tool=Boost.Build --incremental
-
-files_to_compilation_database
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+### files_to_compilation_database
 
 To show the options, run the following commands.
 
-::
+``` shell
+files_to_compilation_database_py --help
+```
 
-   files_to_compilation_database_py --help
-
-::
-
-   files_to_compilation_database_cpp --help
+``` shell
+files_to_compilation_database_cpp --help
+```
 
 The simplest usage is to pipe a list of filenames to the program.  The
 following command shows the usage with Git to generate the list of C
 and C++ source and header filenames.
 
-::
+``` shell
+git ls-files *.[ch] *.[ch]pp | \
+    files_to_compilation_database_py \
+    --cflags="-std=c89" \
+    --cxxflags="-std=c++11" \
+    --include=include/dir1 \
+    --include=include/dir2
+```
 
-   git ls-files *.[ch] *.[ch]pp | \
-       files_to_compilation_database_py \
-       --cflags="-std=c89" \
-       --cxxflags="-std=c++11" \
-       --include=include/dir1 \
-       --include=include/dir2
+## Requirements
 
-Requirements
-------------
-
-Python Implementation
-~~~~~~~~~~~~~~~~~~~~~
+### Python Implementation
 
 - Python 3.7
 
-C++ Implementation
-~~~~~~~~~~~~~~~~~~
+### C++ Implementation
 
 - Standard C++11 Compiler
-
-   - ``auto``
-   - ``std::begin``, ``std::end``
-   - etc.
-
+  - `auto`
+  - `std::begin`, `std::end`
+  - etc.
 - Standard C++11 Standard Library
-
-   - ``<regex>``
-
+  - `<regex>`
 - Boost C++ Libraries 1.55.0
-
-   - Boost.Program Options
-   - Boost.Filesytem
-   - Boost.Algorithm (String)
-
+  - Boost.Program Options
+  - Boost.Filesytem
+  - Boost.Algorithm (String)
 - Boost.Build from Boost C++ Libraries 1.55.0
 
-Building
---------
+## Building
 
 Run the following command to build and test the system.
 
-::
-
-   b2
+``` shell
+b2
+```
 
 Installation
 ------------
 
-Run the following command to install the system to the ``/usr/local``
+Run the following command to install the system to the `/usr/local`
 prefix.
 
-::
-
-   b2 --prefix=/usr/local install
+``` shell
+b2 --prefix=/usr/local install
+```
