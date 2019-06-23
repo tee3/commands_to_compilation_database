@@ -16,31 +16,31 @@ clang-darwin.link bin/clang-darwin-4.2.1/debug/link-static/files_to_compilation_
 
     "clang++" -lboost_filesystem -lboost_program_options -lboost_system -lboost_filesystem -lboost_program_options -lboost_system  -o "bin/clang-darwin-4.2.1/debug/link-static/files_to_compilation_database_cpp" "bin/clang-darwin-4.2.1/debug/link-static/files_to_compilation_database_cpp.o"        -g
 
-Jamfile</Users/tabsoftwareconsulting/Development/commands_to_compilation_database>.commands-to-compilation-database bin/clang-darwin-4.2.1/debug/link-static/commands_to_compilation_database_py_Boost.Build.json
+Jamfile</tmp>.commands-to-compilation-database bin/clang-darwin-4.2.1/debug/link-static/commands_to_compilation_database_py_Boost.Build.json
 
    ./commands_to_compilation_database_py  --build-tool=Boost.Build --output-filename=bin/clang-darwin-4.2.1/debug/link-static/commands_to_compilation_database_py_Boost.Build.json --root-directory=/tmp < test/commands_to_compilation_log_Boost.Build.txt
 
-Jamfile</Users/tabsoftwareconsulting/Development/commands_to_compilation_database>.compare-compilation-databases bin/clang-darwin-4.2.1/debug/link-static/commands-compare-py.pass
+Jamfile</tmp>.compare-compilation-databases bin/clang-darwin-4.2.1/debug/link-static/commands-compare-py.pass
 
    if ./compare_compilation_databases_py "test/commands_to_compilation_database_Boost.Build.json" "bin/clang-darwin-4.2.1/debug/link-static/commands_to_compilation_database_py_Boost.Build.json" ; then echo "**passed**" > bin/clang-darwin-4.2.1/debug/link-static/commands-compare-py.pass ; fi
 
-Jamfile</Users/tabsoftwareconsulting/Development/commands_to_compilation_database>.commands-to-compilation-database bin/clang-darwin-4.2.1/debug/link-static/commands_to_compilation_database_cpp_Boost.Build.json
+Jamfile</tmp>.commands-to-compilation-database bin/clang-darwin-4.2.1/debug/link-static/commands_to_compilation_database_cpp_Boost.Build.json
 
    ./bin/clang-darwin-4.2.1/debug/link-static/commands_to_compilation_database_cpp  --build-tool=Boost.Build --output-filename=bin/clang-darwin-4.2.1/debug/link-static/commands_to_compilation_database_cpp_Boost.Build.json --root-directory=/tmp < test/commands_to_compilation_log_Boost.Build.txt
 
-Jamfile</Users/tabsoftwareconsulting/Development/commands_to_compilation_database>.compare-compilation-databases bin/clang-darwin-4.2.1/debug/link-static/commands-compare-cpp.pass
+Jamfile</tmp>.compare-compilation-databases bin/clang-darwin-4.2.1/debug/link-static/commands-compare-cpp.pass
 
    if ./compare_compilation_databases_py "test/commands_to_compilation_database_Boost.Build.json" "bin/clang-darwin-4.2.1/debug/link-static/commands_to_compilation_database_cpp_Boost.Build.json" ; then echo "**passed**" > bin/clang-darwin-4.2.1/debug/link-static/commands-compare-cpp.pass ; fi
 
-Jamfile</Users/tabsoftwareconsulting/Development/commands_to_compilation_database>.files-to-compilation-database bin/clang-darwin-4.2.1/debug/link-static/files_to_compilation_database_py.json
+Jamfile</tmp>.files-to-compilation-database bin/clang-darwin-4.2.1/debug/link-static/files_to_compilation_database_py.json
 
    find . -name "*.[ch]pp" | ./files_to_compilation_database_py --cflags=-std=c89 --cxxflags=-std=c++11 --define=DEFINE1 --define=DEFINE2 --include=INCLUDE1 --include=INCLUDE2 --undefine=UNDEFINE1 --undefine=UNDEFINE2 --output-filename=bin/clang-darwin-4.2.1/debug/link-static/files_to_compilation_database_py.json --root-directory=/tmp
 
-Jamfile</Users/tabsoftwareconsulting/Development/commands_to_compilation_database>.files-to-compilation-database bin/clang-darwin-4.2.1/debug/link-static/files_to_compilation_database_cpp.json
+Jamfile</tmp>.files-to-compilation-database bin/clang-darwin-4.2.1/debug/link-static/files_to_compilation_database_cpp.json
 
    find . -name "*.[ch]pp" | ./bin/clang-darwin-4.2.1/debug/link-static/files_to_compilation_database_cpp --cflags=-std=c89 --cxxflags=-std=c++11 --define=DEFINE1 --define=DEFINE2 --include=INCLUDE1 --include=INCLUDE2 --undefine=UNDEFINE1 --undefine=UNDEFINE2 --output-filename=bin/clang-darwin-4.2.1/debug/link-static/files_to_compilation_database_cpp.json --root-directory=/tmp
 
-Jamfile</Users/tabsoftwareconsulting/Development/commands_to_compilation_database>.compare-compilation-databases bin/clang-darwin-4.2.1/debug/link-static/files-compare.pass
+Jamfile</tmp>.compare-compilation-databases bin/clang-darwin-4.2.1/debug/link-static/files-compare.pass
 
    if ./compare_compilation_databases_py "bin/clang-darwin-4.2.1/debug/link-static/files_to_compilation_database_py.json" "bin/clang-darwin-4.2.1/debug/link-static/files_to_compilation_database_cpp.json" ; then echo "**passed**" > bin/clang-darwin-4.2.1/debug/link-static/files-compare.pass ; fi
 
