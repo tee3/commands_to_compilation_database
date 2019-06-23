@@ -78,6 +78,7 @@ for implementation in py cpp
       make commands_to_compilation_database_$(build-tool)_$(implementation).json
          : # sources
             commands_to_compilation_database_$(implementation)
+            test/commands_to_compilation_database_$(build-tool).txt
          : # generating-rule
             @commands-to-compilation-database
          : # requirements
@@ -126,7 +127,7 @@ toolset.flags commands-to-compilation-database FLAGS : <flags> ;
 
 actions commands-to-compilation-database
 {
-   ./$(>) $(FLAGS) --build-tool=$(BUILD_TOOL) --output-filename=$(<) --root-directory=/tmp < test/commands_to_compilation_database_$(BUILD_TOOL).txt
+   ./$(>[1]) $(FLAGS) --build-tool=$(BUILD_TOOL) --output-filename=$(<) --root-directory=/tmp < $(>[2])
 }
 
 toolset.flags files-to-compilation-database FLAGS : <flags> ;
