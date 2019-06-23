@@ -20,124 +20,124 @@ package.install install
   ;
 
 exe commands_to_compilation_database_cpp
-   : # sources
+  : # sources
 
-      commands_to_compilation_database_cpp.cpp
+    commands_to_compilation_database_cpp.cpp
 
-      compilation_database.hpp
-      json.hpp
+    compilation_database.hpp
+    json.hpp
 
-   : # requirements
+  : # requirements
 
-      <linkflags>-lboost_program_options
-      <linkflags>-lboost_filesystem
-      <linkflags>-lboost_system
+    <linkflags>-lboost_program_options
+    <linkflags>-lboost_filesystem
+    <linkflags>-lboost_system
 
-      <toolset>clang:<cxxflags>"-std=c++11 -stdlib=libc++"
-      <toolset>gcc:<cxxflags>-std=c++11
-      <toolset>darwin:<cxxflags>-std=c++11
+    <toolset>clang:<cxxflags>"-std=c++11 -stdlib=libc++"
+    <toolset>gcc:<cxxflags>-std=c++11
+    <toolset>darwin:<cxxflags>-std=c++11
 
-   ;
+  ;
 
 exe files_to_compilation_database_cpp
-   : # sources
+  : # sources
 
-      files_to_compilation_database_cpp.cpp
+    files_to_compilation_database_cpp.cpp
 
-      compilation_database.hpp
-      json.hpp
+    compilation_database.hpp
+    json.hpp
 
-   : # requirements
+  : # requirements
 
-      <linkflags>-lboost_program_options
-      <linkflags>-lboost_filesystem
-      <linkflags>-lboost_system
+    <linkflags>-lboost_program_options
+    <linkflags>-lboost_filesystem
+    <linkflags>-lboost_system
 
-      <toolset>clang:<cxxflags>"-std=c++11 -stdlib=libc++"
-      <toolset>gcc:<cxxflags>-std=c++11
-      <toolset>darwin:<cxxflags>-std=c++11
+    <toolset>clang:<cxxflags>"-std=c++11 -stdlib=libc++"
+    <toolset>gcc:<cxxflags>-std=c++11
+    <toolset>darwin:<cxxflags>-std=c++11
 
-   ;
+  ;
 
 alias test
-   : # sources
-      commands-to-compilation-database-compare-make-py.pass
-      commands-to-compilation-database-compare-make-cpp.pass
-      commands-to-compilation-database-compare-Boost.Build-py.pass
-      commands-to-compilation-database-compare-Boost.Build-cpp.pass
+  : # sources
+    commands-to-compilation-database-compare-make-py.pass
+    commands-to-compilation-database-compare-make-cpp.pass
+    commands-to-compilation-database-compare-Boost.Build-py.pass
+    commands-to-compilation-database-compare-Boost.Build-cpp.pass
 
-      files-to-compilation-database-compare.pass
-   ;
+    files-to-compilation-database-compare.pass
+  ;
 
 # generate targets for each implementation
 for implementation in py cpp
 {
-   for build-tool in make Boost.Build
-   {
-      explicit commands_to_compilation_database_$(build-tool)_$(implementation).json ;
-      make commands_to_compilation_database_$(build-tool)_$(implementation).json
-         : # sources
-            commands_to_compilation_database_$(implementation)
-            test/commands_to_compilation_database_$(build-tool).txt
-         : # generating-rule
-            @commands-to-compilation-database
-         : # requirements
-            <build-tool>$(build-tool)
-         ;
-
-      explicit commands-to-compilation-database-compare-$(build-tool)-$(implementation).pass ;
-      make commands-to-compilation-database-compare-$(build-tool)-$(implementation).pass
-         : # sources
-            test/commands_to_compilation_database_$(build-tool).json
-            commands_to_compilation_database_$(build-tool)_$(implementation).json
-         : # generating-rule
-            @compare-compilation-databases
-         ;
-   }
-
-   explicit files_to_compilation_database_$(implementation).json ;
-   make files_to_compilation_database_$(implementation).json
+  for build-tool in make Boost.Build
+  {
+    explicit commands_to_compilation_database_$(build-tool)_$(implementation).json ;
+    make commands_to_compilation_database_$(build-tool)_$(implementation).json
       : # sources
-         files_to_compilation_database_$(implementation)
+        commands_to_compilation_database_$(implementation)
+        test/commands_to_compilation_database_$(build-tool).txt
       : # generating-rule
-         @files-to-compilation-database
+        @commands-to-compilation-database
       : # requirements
-         <flags>--cflags=-std=c89
-         <flags>--cxxflags=-std=c++11
-         <flags>--include=INCLUDE1
-         <flags>--include=INCLUDE2
-         <flags>--define=DEFINE1
-         <flags>--define=DEFINE2
-         <flags>--undefine=UNDEFINE1
-         <flags>--undefine=UNDEFINE2
+        <build-tool>$(build-tool)
       ;
+
+    explicit commands-to-compilation-database-compare-$(build-tool)-$(implementation).pass ;
+    make commands-to-compilation-database-compare-$(build-tool)-$(implementation).pass
+      : # sources
+        test/commands_to_compilation_database_$(build-tool).json
+        commands_to_compilation_database_$(build-tool)_$(implementation).json
+      : # generating-rule
+        @compare-compilation-databases
+      ;
+  }
+
+  explicit files_to_compilation_database_$(implementation).json ;
+  make files_to_compilation_database_$(implementation).json
+    : # sources
+      files_to_compilation_database_$(implementation)
+    : # generating-rule
+      @files-to-compilation-database
+    : # requirements
+      <flags>--cflags=-std=c89
+      <flags>--cxxflags=-std=c++11
+      <flags>--include=INCLUDE1
+      <flags>--include=INCLUDE2
+      <flags>--define=DEFINE1
+      <flags>--define=DEFINE2
+      <flags>--undefine=UNDEFINE1
+      <flags>--undefine=UNDEFINE2
+    ;
 }
 
 explicit files-to-compilation-database-compare.pass ;
 make files-to-compilation-database-compare.pass
-   : # sources
-      files_to_compilation_database_py.json
-      files_to_compilation_database_cpp.json
-   : # generating-rule
-      @compare-compilation-databases
-   ;
+  : # sources
+    files_to_compilation_database_py.json
+    files_to_compilation_database_cpp.json
+  : # generating-rule
+    @compare-compilation-databases
+  ;
 
 toolset.flags commands-to-compilation-database BUILD_TOOL : <build-tool> ;
 toolset.flags commands-to-compilation-database FLAGS : <flags> ;
 
 actions commands-to-compilation-database
 {
-   ./$(>[1]) $(FLAGS) --build-tool=$(BUILD_TOOL) --output-filename=$(<) --root-directory=/tmp < $(>[2])
+  ./$(>[1]) $(FLAGS) --build-tool=$(BUILD_TOOL) --output-filename=$(<) --root-directory=/tmp < $(>[2])
 }
 
 toolset.flags files-to-compilation-database FLAGS : <flags> ;
 
 actions files-to-compilation-database
 {
-   echo "*.[ch]pp" | ./$(>) $(FLAGS) --output-filename=$(<) --root-directory=/tmp
+  echo "*.[ch]pp" | ./$(>) $(FLAGS) --output-filename=$(<) --root-directory=/tmp
 }
 
 actions compare-compilation-databases
 {
-   if ./compare_compilation_databases_py "$(>[1])" "$(>[2])" ; then echo "**passed**" > $(<) ; else rm -f $(<) && false ; fi
+  if ./compare_compilation_databases_py "$(>[1])" "$(>[2])" ; then echo "**passed**" > $(<) ; else rm -f $(<) && false ; fi
 }
