@@ -126,7 +126,7 @@ toolset.flags commands-to-compilation-database FLAGS : <flags> ;
 
 actions commands-to-compilation-database
 {
-   ./$(>) $(FLAGS) --build-tool=$(BUILD_TOOL) --output-filename=$(<) < test/commands_to_compilation_database_$(BUILD_TOOL).txt
+   ./$(>) $(FLAGS) --build-tool=$(BUILD_TOOL) --output-filename=$(<) --root-directory=/tmp < test/commands_to_compilation_database_$(BUILD_TOOL).txt
 }
 
 toolset.flags files-to-compilation-database FLAGS : <flags> ;
