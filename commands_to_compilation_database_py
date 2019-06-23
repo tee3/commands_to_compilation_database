@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """A program to generate a compilation database by parsing build
 commands on standard input or an input file.  It assumes that a single
 line compiles a single source file and the clang compiler is used as
@@ -107,7 +107,7 @@ if __name__ == '__main__':
             compile_command_regex = re.compile(r'^"([^"]+)" .+ "([^"]+)"$')
     else:
         if args.build_tool != '':
-            print 'warning: regex overriding build tool option.'
+            print('warning: regex overriding build tool option.')
 
         compile_command_regex = re.compile(args.compile_command_regex)
 
