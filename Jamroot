@@ -133,7 +133,7 @@ toolset.flags files-to-compilation-database FLAGS : <flags> ;
 
 actions files-to-compilation-database
 {
-   find . -name "*.[ch]pp" | ./$(>) $(FLAGS) --output-filename=$(<) --root-directory=/tmp
+   echo "*.[ch]pp" | ./$(>) $(FLAGS) --output-filename=$(<) --root-directory=/tmp
 }
 
 actions compare-compilation-databases
